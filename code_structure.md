@@ -1,0 +1,88 @@
+# Project Directory Structure
+
+- **algorithm/**
+  - **fedavg/**
+    - [client.py](./algorithm/fedavg/client.py)
+    - [fedavg_trainer.py](./algorithm/fedavg/fedavg_trainer.py)
+    - [optim.py](./algorithm/fedavg/optim.py)
+    - [util.py](./algorithm/fedavg/util.py)
+  - **feddc/**
+    - [client.py](./algorithm/feddc/client.py)
+    - [feddc_trainer.py](./algorithm/feddc/feddc_trainer.py)
+    - [util.py](./algorithm/feddc/util.py)
+  - **feddyn/**
+    - [client.py](./algorithm/feddyn/client.py)
+    - [comm_helpers.py](./algorithm/feddyn/comm_helpers.py)
+    - [feddyn_trainer.py](./algorithm/feddyn/feddyn_trainer.py)
+    - [optim.py](./algorithm/feddyn/optim.py)
+  - **fedprox/**
+    - [client.py](./algorithm/fedprox/client.py)
+    - [comm_helpers.py](./algorithm/fedprox/comm_helpers.py)
+    - [fedprox_trainer.py](./algorithm/fedprox/fedprox_trainer.py)
+    - [optim.py](./algorithm/fedprox/optim.py)
+  - **local/**
+    - [client.py](./algorithm/local/client.py)
+    - [local_trainer.py](./algorithm/local/local_trainer.py)
+    - [optim.py](./algorithm/local/optim.py)
+    - [util.py](./algorithm/local/util.py)
+- **core/**
+  - [base_dataset.py](./core/base_dataset.py)
+  - [base_model.py](./core/base_model.py)
+  - [base_network.py](./core/base_network.py)
+  - [logger.py](./core/logger.py)
+  - [praser.py](./core/praser.py)
+  - [util.py](./core/util.py)
+- **dataset/**
+- **models/**
+  - **fedst_ddpm_model/**
+    - [base_model.py](./models/fedst_ddpm_model/base_model.py)
+    - **ddpm_models/**
+      - **config/**
+      - **core/**
+        - [base_dataset.py](./models/fedst_ddpm_model/ddpm_models/core/base_dataset.py)
+        - [base_model.py](./models/fedst_ddpm_model/ddpm_models/core/base_model.py)
+        - [base_network.py](./models/fedst_ddpm_model/ddpm_models/core/base_network.py)
+        - [logger.py](./models/fedst_ddpm_model/ddpm_models/core/logger.py)
+        - [praser.py](./models/fedst_ddpm_model/ddpm_models/core/praser.py)
+        - [util.py](./models/fedst_ddpm_model/ddpm_models/core/util.py)
+      - [ddpm_config.py](./models/fedst_ddpm_model/ddpm_models/ddpm_config.py)
+      - **models/**
+        - **guided_diffusion_modules/**
+          - [nn.py](./models/fedst_ddpm_model/ddpm_models/models/guided_diffusion_modules/nn.py)
+          - [unet.py](./models/fedst_ddpm_model/ddpm_models/models/guided_diffusion_modules/unet.py)
+        - [loss.py](./models/fedst_ddpm_model/ddpm_models/models/loss.py)
+        - [metric.py](./models/fedst_ddpm_model/ddpm_models/models/metric.py)
+        - [model.py](./models/fedst_ddpm_model/ddpm_models/models/model.py)
+        - [network.py](./models/fedst_ddpm_model/ddpm_models/models/network.py)
+        - **sr3_modules/**
+          - [unet.py](./models/fedst_ddpm_model/ddpm_models/models/sr3_modules/unet.py)
+        - [_\_init__.py](./models/fedst_ddpm_model/ddpm_models/models/__init__.py)
+      - [network.py](./models/fedst_ddpm_model/ddpm_models/network.py)
+    - [fedst_ddpm_model.py](./models/fedst_ddpm_model/fedst_ddpm_model.py)
+    - [networks.py](./models/fedst_ddpm_model/networks.py)
+  - **losses/**
+    - [losses.py](./models/losses/losses.py)
+    - [_\_init__.py](./models/losses/__init__.py)
+  - **unet_model/**
+    - [base_model.py](./models/unet_model/base_model.py)
+    - [networks.py](./models/unet_model/networks.py)
+    - [unet_model.py](./models/unet_model/unet_model.py)
+  - [_\_init__.py](./models/__init__.py)
+- **opt/**
+  - [aaf_face_options.py](./opt/aaf_face_options.py)
+  - [face_options.py](./opt/face_options.py)
+  - [material_options.py](./opt/material_options.py)
+  - [medical_material_options.py](./opt/medical_material_options.py)
+  - [medical_options.py](./opt/medical_options.py)
+  - [_\_init__.py](./opt/__init__.py)
+- **pretrained_model/**
+  - **DDPM_for_AAF_Face/**
+  - **Face_Segment/**
+- **scripts/**
+- [test.py](.//test.py)
+- [train.py](.//train.py)
+- **util/**
+  - [evaluation.py](./util/evaluation.py)
+  - [image_pool.py](./util/image_pool.py)
+  - [metrics.py](./util/metrics.py)
+  - [util.py](./util/util.py)
