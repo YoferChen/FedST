@@ -7,10 +7,12 @@ Implementation of the paper accepted by AAAI 2024: [FedST: Federated Style Trans
 
 ![Network](./docs/Network.png)
 
-## Dependencies
+## Dependencies & Environment
+> This experiment was conducted in the following environment and platform, while other environments and platforms have not been tested.
+- Python=3.6.9
+- Pytorch=1.8.1
 
-- Python>=3.6
-- Pytorch>=1.8.2
+- Platform: Tesla V100-SXM2-32GB
 
 ## Usage
 
@@ -37,10 +39,13 @@ Implementation of the paper accepted by AAAI 2024: [FedST: Federated Style Trans
           └─1
   ```
 
-- Train style transfer generator to generate synthetic cross-domain data and place them under the `train/fake_image` folder as shown above.
+- Train style transfer generator to generate *Synthetic Cross-Domain Data* and place them under the `train/fake_image` folder as shown above.
+> FedST-Separate: reference: https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models
+> 
+> FedST-Join: reference: [./scripts/train_test.sh](./scripts/train_test.sh)
 
-- Train Federated Learning Segmentation Model
-
+- Train and Test Federated Learning Segmentation Model
+> Reference: [./scripts/train_test.sh](./scripts/train_test.sh)
 
 
 ## Citation
