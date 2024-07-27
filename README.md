@@ -20,6 +20,7 @@ Implementation of the paper accepted by AAAI 2024: [FedST: Federated Style Trans
 
 ## Usage
 
+- Download dataset: [BaiduNetdisk](https://pan.baidu.com/s/1VXZgDfz742Jqn4HzUT2O1A?pwd=cyvx)
 - Prepare your dataset and place them under the `dataset` folder. The file structure is similar to the following shown
 
   ```
@@ -53,4 +54,4 @@ Implementation of the paper accepted by AAAI 2024: [FedST: Federated Style Trans
 
 
 ## Citation
-
+Ma B, Yin X, Tan J, et al. FedST: Federated Style Transfer Learning for Non-IID Image Segmentation[C]//Proceedings of the AAAI Conference on Artificial Intelligence. 2024, 38(5): 4053-4061.
