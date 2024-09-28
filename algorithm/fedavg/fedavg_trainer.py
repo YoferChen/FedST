@@ -62,6 +62,8 @@ class FedAvgTrainer(object):
             save_path = 'model_fedst_separate'
         elif self.opt_train.fake_dirname == 'fake_image_join':
             save_path = 'model_fedst_join'
+        if self.opt_train.__dict__.get('_federated_algorithm'):
+            save_path = f'model_{self.opt_train._federated_algorithm}'
 
         # get current timestamp
         timestamp = time.time()

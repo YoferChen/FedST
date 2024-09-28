@@ -5,28 +5,31 @@ import numpy as np
 import torchvision.transforms as tr
 from collections import OrderedDict
 
-
 parser = argparse.ArgumentParser()
 # CHAOS_liver   Material   Face_segment
 parser.add_argument('--dataset', default='face',
-                    choices=['material', 'medical', 'medical_material', 'face', 'aaf_face'],
+                    choices=['material', 'medical', 'medical_material', 'face', 'aaf_face', 'XCX'],
                     help='Which dataset to use')
 parser.add_argument('--model_path', type=str,
                     help='Choose which model to use,unet...')
 parser.add_argument('--fold', type=str, default='0', help='chooses fold...')
-parser.add_argument('--algorithm', type=str, default='fedddpm',
+parser.add_argument('--algorithm', type=str, default='fedavg',
                     help='Chooses which federated learning algorithm to use')
 parser.add_argument('--client_id', type=int, default=-1,
                     help='Client id for local trainer')
 parser.add_argument('--bg_value', type=int, default=0,
-                    help='Background pixel value for evaluating test set')
-parser.add_argument('--save_image', type=int, default=0,
+                    help='Background pixel value for evaluating test set [Not recommended]')
+parser.add_argument('--mask_reverse', type=int, default=0,
+                    help='Reverse the mask for binary mask [Recommendation for boundary segmentation task]')
+parser.add_argument('--save_image', type=int, default=1,
                     help='Whether to save the predicted mask image')
 parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids:e.g.0 0,1,2 1,2 use -1 for CPU')
 op = parser.parse_args()
 dataset = op.dataset
 if dataset == 'material':
     from opt.material_options import TrainOptions, TestOptions
+elif op.dataset == 'XCX':
+    from opt.XCX_options import TrainOptions, TestOptions
 elif dataset == 'face':
     from opt.face_options import TrainOptions, TestOptions
 elif dataset == 'medical':
@@ -42,15 +45,17 @@ model_path = op.model_path + fold + '.pkl'
 method = dataset + '_' + fed_methods + '_fold_' + fold
 client_id = op.client_id
 bg_value = op.bg_value
+mask_reverse = op.mask_reverse
 from data.dataloader.data_loader import CreateDataLoader
 from models import create_model
 import time
-from util.util import mkdir
+from util.util import mkdir, get_time_str
 from util.metrics import get_total_evaluation
+from util.evaluation import get_map_miou_vi_ri_ari
 import torch
 import tqdm
 
-is_save_image = True if op.save_image>0 else False
+is_save_image = True if op.save_image > 0 else False
 
 if __name__ == '__main__':
     gpu_ids = op.gpu_ids.split(',')
@@ -88,6 +93,7 @@ if __name__ == '__main__':
 
     # opt.isTrain = True
     opt_train.model = 'unet'
+    opt_train.mode = 'test'
     model = create_model(opt_train)
 
     # if 'fedst' in method:
@@ -102,15 +108,19 @@ if __name__ == '__main__':
 
     print(f"[Test] Model {model_path} has loaded.")
 
-    # img_dir = os.path.join(opt.results_dir, opt.name, '%s' % method)
+    # output_dir = os.path.join(opt.results_dir, opt.name, '%s' % method)
     save_dir_name = '_'.join(str(op.model_path).split('/')[-2:]) + '_' + fold
-    img_dir = os.path.join(opt.results_dir, opt.name, save_dir_name)
-    print('Eval result has saved to %s' % img_dir)
-    mkdir(img_dir)
+    output_dir = os.path.join(opt.results_dir, opt.name, save_dir_name)
+    if mask_reverse:
+        output_dir += '_reverse'
+    output_dir += '_' + get_time_str()  # Add time str
+    eval_file = output_dir + '_eval.txt'
+    print('Eval result has saved to %s' % output_dir)
+    mkdir(output_dir)
 
     eval_results = {}
     count = 0
-    with open(img_dir + '_eval.txt', 'w') as log:
+    with open(eval_file, 'w') as log:
         now = time.strftime('%c')
         log.write('=============Evaluation (%s)=============\n' % now)
 
@@ -123,21 +133,33 @@ if __name__ == '__main__':
         with torch.no_grad():
             pred = model()[0]
 
+        print(pred.shape)
         pred = pred.max(0)[1].cpu().numpy()
+        print(pred.shape)
         img_path = data['path'][0]
         short_path = os.path.basename(img_path)
         name = os.path.splitext(short_path)[0]
         image_name = '%s.png' % name
-        if is_save_image:
-            mask_dir = os.path.join(img_dir, 'mask')
-            os.makedirs(mask_dir, exist_ok=True)
-            Image.fromarray(pred.astype(np.uint8)).save(os.path.join(mask_dir, image_name))
 
         eval_start = time.time()
         count += 1
         mask = data['label'].squeeze().numpy().astype(np.uint8)
         print(f"bg_value: {bg_value}")
-        eval_result = get_total_evaluation(pred, mask, bg_value=bg_value)
+
+        # mask reverse for binary mask
+        if mask_reverse:
+            mask = 1 - mask
+            pred = 1 - pred
+
+        if is_save_image:
+            mask_dir = os.path.join(output_dir, 'mask')
+            os.makedirs(mask_dir, exist_ok=True)
+            binary_dir = os.path.join(output_dir, 'binary')
+            os.makedirs(binary_dir, exist_ok=True)
+            Image.fromarray(pred.astype(np.uint8)).save(os.path.join(mask_dir, image_name))
+            Image.fromarray(pred.astype(bool)).save(os.path.join(binary_dir, image_name))
+
+        eval_result = get_total_evaluation(pred, mask)
         print(data['label'].data[0].shape)
 
         message = '%04d: %s \t' % (count, name)
@@ -151,12 +173,12 @@ if __name__ == '__main__':
         eval_result['name'] = name
         result.append(eval_result)
         print(message, 'cost: %.4f' % (time.time() - eval_start))
-        with open(img_dir + '_eval.txt', 'a') as log:
+        with open(eval_file, 'a') as log:
             log.write(message + '\n')
 
     message = 'total %d:\n' % count
     for k, v in eval_results.items():
         message += 'm_%s: %.5f\t' % (k, v / count)
     print(message)
-    with open(img_dir + '_eval.txt', 'a') as log:
+    with open(output_dir + '_eval.txt', 'a') as log:
         log.write(message + '\n')

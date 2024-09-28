@@ -45,8 +45,10 @@ Implementation of the paper accepted by AAAI 2024: [FedST: Federated Style Trans
   ```
 
 - Train style transfer generator to generate *Synthetic Cross-Domain Data* and place them under the `train/fake_image` folder as shown above.
+> Please reference: [./ddpm](./ddpm/README.md)
+>
 > FedST-Separate: reference: https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models
-> 
+>
 > FedST-Join: reference: [./scripts/train_test.sh](./scripts/train_test.sh)
 
 - Train and Test Federated Learning Segmentation Model

@@ -18,7 +18,7 @@ class BaseOptions():
         parser.add_argument('--gpu_ids',type=str,default='0,1,2',help='gpu ids:e.g.0 0,1,2 1,2 use -1 for CPU')
         parser.add_argument('--name', type=str, default = 'material' , required=False, help='name of the experiment.')
         parser.add_argument('--model',type=str,default='fedst',choices=['unet','fedst', 'fedst_ddpm'],help='chooses which model to use,unet...')
-        parser.add_argument('--federated_algrithom',type=str,default='fedavg',choices=['fedavg', 'fedprox', 'feddyn', 'feddc', 'fedddpm'],help='chooses which federated learning algrithom to use')
+        parser.add_argument('--federated_algorithm',type=str,default='fedavg',choices=['local', 'fedavg', 'fedprox', 'feddyn', 'feddc', 'fedddpm', 'fedst_separate', 'fedst_join'],help='chooses which federated learning algrithom to use')
         parser.add_argument('--net',type=str,default='unet',choices=['unet'],help='chooses which network to use,unet...')
         parser.add_argument('--init_type', type=str, default='xavier_uniform', help='network initialization [normal|xavier|kaiming|orthogonal]')
         parser.add_argument('--init_gain', type=float, default=1.0, help='scaling factor for normal, xavier and orthogonal.')

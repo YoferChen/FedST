@@ -9,7 +9,18 @@ from logging import handlers
 import matplotlib.pyplot as plt
 import copy
 from skimage.io import imread, imsave
+import time
+import datetime
 #import xlsxwriter
+
+def get_time_str():
+    # get current timestamp
+    timestamp = time.time()
+    # timestamp to datetime
+    dt_object = datetime.datetime.fromtimestamp(timestamp)
+    # datetime format
+    formatted_string = dt_object.strftime('%m%d_%H%M%S')
+    return formatted_string
  
 #生成excel文件
 def generate_excel(expenses, list_title):

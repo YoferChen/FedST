@@ -78,7 +78,8 @@ def get_map_miou_vi_ri_ari(pred, mask, boundary=255):
     '''
     label_mask = mask
     label_pred = pred
-    num_mask, num_pred = 19, 19
+    # num_mask, num_pred = 19, 19
+    num_mask, num_pred = np.max(label_mask)+1, np.max(label_pred)+1
     results = {}
     m_ap_iou = calculate_ap(label_pred, num_pred, label_mask, num_mask)
     results.update(m_ap_iou)

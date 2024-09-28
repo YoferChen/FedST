@@ -507,6 +507,7 @@ def get_grain_size(img, M=100.0):
     # print(current, "done!")
 
     P_avg = (P[0] + P[1] + P[2]) / (3 * 2)
+    P_avg = P_avg if P_avg != 0 else 1e-4
 
     #  计算晶粒度G
     G = 6.643856 * math.log((M * P_avg) / L, 10) - 3.288

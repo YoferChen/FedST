@@ -1,4 +1,4 @@
-import tqdm
+from tqdm import tqdm
 
 
 class Client:
@@ -34,7 +34,7 @@ class Client:
         self.log.logger.info('lr : ' + str(self.lr))
         for epoch in range(self.args.epochs):
             batch_loss = []
-            for data in tqdm.tqdm(self.local_training_data):
+            for data in tqdm(self.local_training_data):
                 self.model.set_input(data)
                 self.model.set_learning_rate(self.lr)
                 self.model.optimize_parameters()
@@ -45,7 +45,7 @@ class Client:
         losses = {}
         epoch_loss_t = []
         batch_loss_t = []
-        for data in tqdm.tqdm(test_data):
+        for data in tqdm(test_data):
             data['label'][:, :, [0, -1], :] = 1
             data['label'][:, :, :, [0, -1]] = 1
             self.model.set_input(data)

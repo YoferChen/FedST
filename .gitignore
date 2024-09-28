@@ -2,6 +2,14 @@
 /dataset/
 /pretrained_model/
 /code_struture_with_link.py
+/results/
+/ddpm/datasets/
+/scripts/*
+/opt/*
+/ddpm/experiments/
+
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

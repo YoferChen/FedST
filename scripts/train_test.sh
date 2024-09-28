@@ -29,12 +29,12 @@ python ./train.py --dataset aaf_face --model unet --federated_algorithm fedst_jo
 
 # Train UNet of the face segmentation task with different ages
 # $model_path is the path of the pretrained model, like: ./dataset/AAF_Face/model_fedprox_0808_172044/model49_folds
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm fedavg
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm fedprox
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm feddyn
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm feddc
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm fedst_separate
-python ./test.py --dataset aaf_face --fold 0 --model_path $model_path --algorithm fedst_join
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm fedavg
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm fedprox
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm feddyn
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm feddc
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm fedst_separate
+python ./test.py --dataset aaf_face --model unet --fold 0 --model_path $model_path --algorithm fedst_join
 
 # Train FedST_Separate DDPM for the face segmentation task with different ages
 # Please reference: https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models
